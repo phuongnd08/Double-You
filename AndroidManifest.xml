@@ -19,12 +19,10 @@
      supplies a unique name for the application.  When writing your
      own application, the package name must be changed from "com.example.*"
      to come from a domain that you own or have control over. -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.snake">
-    <application android:label="Snake on a Phone">
-      <activity android:name="Snake"
-        android:screenOrientation="portrait"
-        android:configChanges="keyboardHidden|orientation">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.android.game.DoubleU">
+    <application android:allowTaskReparenting="true" android:label="Double You">
+      <activity android:screenOrientation="portrait"
+        android:configChanges="keyboardHidden|orientation" android:name="DoubleU">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
