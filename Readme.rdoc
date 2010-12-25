@@ -1,0 +1,26 @@
+= Double You
+
+* http://github.com/phuongnd08/DoubleYou
+
+== Description:
+
+This is an Android developed by 2 guys, namely Phuong Nguyen and Tue Bui, where Tue Bui sucks because he doesn't know scala.
+
+== Install:
+
+* Install Android SDK
+* Create AVD named Droid (since the script was setup to deploy into a device named Droid)
+* Install Apache Maven 2.2.1 or newer version (but not Maven 3)
+* Compile all stuff with
+
+    mvn clean install
+
+* Deploy the app into ADV with
+
+    mvn android:deploy
+
+* For idiot: If you want to compile all stuff and the deploy the app into ADV then run
+
+    mvn clean install android:deploy
+
+
