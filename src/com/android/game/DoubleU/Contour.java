@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.java.android.DoubleU.Algorithm.Point;
@@ -21,7 +22,7 @@ public class Contour {
 
 	public Contour() {
 		vectorList = new ArrayList<Vector>();
-		currLineIndex = -1;
+		currLineIndex = -1; 
 	}
 
 	private Point getCurrPoint() {
@@ -51,8 +52,17 @@ public class Contour {
 
 	public void drawMe(Canvas c, Paint p) {
 		// int pointIndex = 0;
+		// draw some text using FILL style
+		Paint textPaint = new Paint();
+		textPaint.setStyle(Paint.Style.FILL);
+		textPaint.setAntiAlias(true);
+		textPaint.setTextSize(15);
+		textPaint.setColor(Color.GREEN);
+		
 		for (int i = 0; i < this.vectorList.size(); i++) {
 			Vector aVector = this.vectorList.get(i);
+			c.drawText(String.valueOf(i), aVector.getStartPoint().getX(),
+					aVector.getStartPoint().getY(), textPaint);
 			aVector.drawMe(c, p);
 		}
 	}

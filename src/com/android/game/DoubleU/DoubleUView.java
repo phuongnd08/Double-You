@@ -1,6 +1,5 @@
 package com.android.game.DoubleU;
 
-import com.java.android.DoubleU.Algorithm.StraightLine;
 import com.java.android.DoubleU.Exceptions.MathException;
 
 import android.content.Context;
@@ -20,25 +19,17 @@ public class DoubleUView extends View {
     private Paint mPaint;
     private Path mPath;
     private Canvas mCanvas;
+    private Contour mContour; 
 
-    private float mStartX;
-    private float mStartY;
-    private float mStopX;
-    private float mStopY;
-    private StraightLine mLine;
-
-    private final float mR = 6f;
+    private final float mR = 8f;
 
     public DoubleUView(Context context) {
         super(context);
         setFocusable(true);
         setFocusableInTouchMode(true);
-        try {
-            initLayoutBitmap();
-        } catch (MathException e) {
-            e.printStackTrace();
-        }
-
+        mLayoutBitmap = Bitmap.createBitmap(320, 480, Config.ARGB_8888);
+        mCanvas = new Canvas(mLayoutBitmap);        
+        initContour();
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
@@ -46,30 +37,27 @@ public class DoubleUView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(2 * mR);
+        mPaint.setStrokeWidth(8);
 
         mPath = new Path();
         mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+        
     }
 
-    private void initLayoutBitmap() throws MathException {
-        mLayoutBitmap = Bitmap.createBitmap(320, 480, Config.ARGB_8888);
-        mCanvas = new Canvas(mLayoutBitmap);
+
+    public void initContour(){
+    	this.mContour = new Contour();
+        // draw a line in background
         Canvas c = new Canvas(mLayoutBitmap);
         c.drawColor(Color.BLACK);
         Paint p = new Paint();
         p.setColor(Color.BLUE);
-
-        // draw a line in background
-        this.mStartX = 50;
-        this.mStartY = 50;
-        this.mStopX = 200;
-        this.mStopY = 300;
-        this.mLine = new StraightLine(this.mStartX, this.mStartY,
-                this.mStopX, this.mStopY);
-        c.drawLine(this.mStartX, this.mStartY, this.mStopX, this.mStopY, p);
+        this.mContour.appendLine(50, 50, 120, 100);
+        this.mContour.appendLine(120, 100, 150, 200);
+        this.mContour.appendLine(150, 200, 50, 200);
+        this.mContour.appendLine(50, 200, 50, 50);
+        this.mContour.drawMe(c, p);
     }
-
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(0xFFAAAAAA);
@@ -79,19 +67,30 @@ public class DoubleUView extends View {
         canvas.drawPath(mPath, mPaint);
     };
 
-    private void highlightLine(float x, float y) throws MathException {
-        com.java.android.DoubleU.Algorithm.Point[] intersections = mLine
-                .getLinePartInsideCircle(new com.java.android.DoubleU.Algorithm.Point(x, y), mR);
-        if (intersections.length == 2) {
-            mPath.reset();
-            mPath.moveTo(intersections[0].getX(), intersections[0].getY());
-            mPath.lineTo(intersections[1].getX(), intersections[1].getY());
-            mCanvas.drawPath(mPath, mPaint);
-            mPath.reset();
-        } else if (intersections.length == 1) {
-            mCanvas.drawPoint(intersections[0].getX(), intersections[0].getY(),
+    private void drawIntersections(com.java.android.DoubleU.Algorithm.Point[] points){
+    	if (points.length > 1){
+			com.java.android.DoubleU.Algorithm.Point startPoint = points[0]; 
+			com.java.android.DoubleU.Algorithm.Point stopPoint;
+			int index = 1;
+			do {
+				stopPoint  = points[index]; 
+				mPath.reset();
+				mPath.moveTo(startPoint.getX(), startPoint.getY());
+				mPath.lineTo(stopPoint.getX(), stopPoint.getY());
+				mCanvas.drawPath(mPath, mPaint);
+				mPath.reset();
+				startPoint = stopPoint;
+				index++;
+			} while (index < points.length);
+    	} else if (points.length == 1){
+            mCanvas.drawPoint(points[0].getX(), points[0].getY(),
                     mPaint);
-        }
+    	}
+    }
+    private void highlightLine(float x, float y) throws MathException {
+        com.java.android.DoubleU.Algorithm.Point[] intersections = this.mContour
+                .getLinePartInsideCircle(new com.java.android.DoubleU.Algorithm.Point(x, y), mR);
+        this.drawIntersections(intersections);
     }
 
     private void touch_start(float x, float y) throws MathException {
