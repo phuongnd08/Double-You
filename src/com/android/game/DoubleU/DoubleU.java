@@ -16,10 +16,13 @@
 
 package com.android.game.DoubleU;
 
+
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
 
 /**
  * Snake: a simple game that everyone can enjoy.
@@ -43,12 +46,15 @@ public class DoubleU extends Activity {
 
 		// No Title bar
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-		setContentView(new DoubleUView(this));
+		setContentView(R.layout.main);
+        findViewById(R.id.start_comp).setOnClickListener(
+                new OnClickListener() {
+            public void onClick(View v) {
+            	setContentView(R.layout.doubleu_layout);
+            }
+        });
 	}
 
 }
