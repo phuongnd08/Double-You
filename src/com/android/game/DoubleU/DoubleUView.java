@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Bitmap.Config;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -23,8 +24,7 @@ public class DoubleUView extends View {
 
     private final float mR = 8f;
 
-    public DoubleUView(Context context) {
-        super(context);
+    public void initDoubleUView() {
         setFocusable(true);
         setFocusableInTouchMode(true);
         mLayoutBitmap = Bitmap.createBitmap(320, 480, Config.ARGB_8888);
@@ -44,7 +44,11 @@ public class DoubleUView extends View {
         
     }
 
-
+	public DoubleUView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		initDoubleUView();
+	}
+	
     public void initContour(){
     	this.mContour = new Contour();
         // draw a line in background
