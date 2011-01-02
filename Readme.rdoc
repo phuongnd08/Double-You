@@ -4,7 +4,7 @@
 
 == Description:
 
-This is an Android developed by 2 guys, namely Phuong Nguyen and Tue Bui, where Tue Bui sucks because he doesn't know scala.
+This is an Android game developed by 2 guys, namely Phuong Nguyen and Tue Bui, where Tue Bui sucks because he doesn't know scala.
 
 == Install:
 
@@ -17,10 +17,4 @@ This is an Android developed by 2 guys, namely Phuong Nguyen and Tue Bui, where 
 
 * Deploy the app into ADV with
 
-    mvn android:deploy
-
-* For idiot: If you want to compile all stuff and the deploy the app into ADV then run
-
-    mvn clean install android:deploy
-
-
+    cd app && mvn android:deploy
